@@ -1,0 +1,1 @@
+// vscodeのtailwind css拡張機能を使うためのダミーファイル
