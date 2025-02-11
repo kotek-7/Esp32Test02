@@ -41,13 +41,21 @@ class RxCharacteristicCallbacks : public BLECharacteristicCallbacks
 {
   void onWrite(BLECharacteristic *pCharacteristic)
   {
-    String value = pCharacteristic->getValue();
-    int len = value.length();
+    uint8_t* rx_buf = pCharacteristic->getData();
+
     Serial.println("******");
-    Serial.print("length: ");
-    Serial.println(len);
-    Serial.print("value: ");
-    Serial.println(value);
+    Serial.print("rx buf: ");
+    Serial.print("[ ");
+    for (size_t i = 0; i < sizeof(rx_buf); i++)
+    {
+      Serial.print(rx_buf[i], HEX);
+      Serial.print(" ");
+    }
+    Serial.println("]");
+
+    uint32_t number = (uint32_t)rx_buf[0] | ((uint32_t)rx_buf[1] << 8) | ((uint32_t)rx_buf[2] << 16) | ((uint32_t)rx_buf[3] << 24);
+    Serial.print("rx number: ");
+    Serial.println(number);
     Serial.println("******");
   }
 };

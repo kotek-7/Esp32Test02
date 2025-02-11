@@ -16,6 +16,9 @@ window.addEventListener("load", init);
 function init() {
   const searchButton = document.getElementById("search-button");
   searchButton.addEventListener("click", onSearchDeviceButtonClick);
+  
+  const txForm = document.getElementById("tx-form");
+  txForm.addEventListener("submit", onTxFormSubmit)
 }
 
 async function onSearchDeviceButtonClick() {
@@ -44,12 +47,30 @@ async function onSearchDeviceButtonClick() {
   console.log("tx characteristic: ");
   console.log(txCharacteristic);
 
-  rxCharacteristic.addEventListener('characteristicvaluechanged', onValueChange);
+  rxCharacteristic.addEventListener(
+    "characteristicvaluechanged",
+    onValueChange
+  );
   rxCharacteristic.startNotifications();
 }
 
 /**
- * @param {Event} evt 
+ * @param {Event} evt
+ */
+async function onTxFormSubmit(evt) {
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
+  const txInput = formData.get("tx-input");
+  const txBuf = new DataView(new ArrayBuffer(4));
+  txBuf.setUint32(0, txInput, true);
+  console.log("transmit: ");
+  console.log(txBuf);
+
+  await txCharacteristic.writeValue(txBuf);
+}
+
+/**
+ * @param {Event} evt
  */
 async function onValueChange(evt) {
   /** @type {DataView} */
@@ -57,8 +78,6 @@ async function onValueChange(evt) {
   const value = rxBuf.getUint32(rxBuf, true);
   console.log("value: " + value);
 
-  const rxValues = document.getElementById("rx-values");
-  const rxValue = document.createElement("p");
-  rxValue.innerHTML = value;
-  rxValues.appendChild(rxValue);
+  const rxValue = document.getElementById("rx-value");
+  rxValue.textContent = value;
 }

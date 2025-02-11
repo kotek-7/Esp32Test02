@@ -10,8 +10,26 @@
 
     <title>esp32 test</title>
   </head>
-  <body>
-      <button id="search-button" class="bg-purple-500 text-white py-1 px-4 m-4 rounded hover:bg-purple-600 active:bg-purple-700">search device</button>
-      <div id="rx-values"></div>
+  <body class="p-4">
+    <div>
+      <button
+        id="search-button"
+        class="bg-purple-500 text-white py-1 px-4 rounded hover:bg-purple-600 active:bg-purple-700"
+      >
+        search device
+      </button>
+    </div>
+    <form id="tx-form" class="mt-4">
+      <input
+        name="tx-input"
+        type="number"
+        class="border-2 border-slate-600 rounded p-1"
+      />
+      <input type="submit" value="送信" class="ml-2 bg-slate-200 px-4 py-1 rounded hover:bg-slate-300 active:bg-slate-400"/>
+    </form>
+    <div class="mt-4 px-8 pt-4 pb-8 w-fit border rounded-lg text-center">
+      <p>random value</p>
+      <p id="rx-value" class="text-5xl mt-4">0</p>
+    </div>
   </body>
 </html>
